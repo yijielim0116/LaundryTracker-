@@ -11,6 +11,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
@@ -38,6 +39,12 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // use my Toolbar as the action bar, the title comes from the app name in the manifest
+        val toolbar =
+            findViewById<Toolbar>(R.id.toolbar)
+
+        setSupportActionBar(toolbar)
 
         val addMachineButton =
             findViewById<Button>(R.id.addMachineButton)
