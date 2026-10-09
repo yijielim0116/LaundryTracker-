@@ -26,6 +26,24 @@
         android:layout_marginTop="16dp"
         android:text="Add Machine" />
 
+    <!-- search box, the list updates while typing -->
+    <EditText
+        android:id="@+id/searchInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="Search by name or location"
+        android:importantForAutofill="no"
+        android:inputType="text" />
+
+    <!-- drop-down to only show machines with a certain status, options are in strings.xml -->
+    <Spinner
+        android:id="@+id/statusFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:entries="@array/status_filter_options" />
+
     <!-- the machine list goes in listLayout (added in MainActivity),
          put it in a ScrollView so it can scroll when there's a lot of machines -->
     <ScrollView

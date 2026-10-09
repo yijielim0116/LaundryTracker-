@@ -3,6 +3,7 @@ package org.setu.laundrytracker.activities
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -46,6 +47,9 @@ class AddEditActivity : AppCompatActivity() {
         val cancelButton =
             findViewById<Button>(R.id.cancelButton)
 
+        val backButton =
+            findViewById<ImageButton>(R.id.backButton)
+
         // MainActivity sends the id when Edit is pressed, -1 means no id was sent
         editingId =
             intent.getLongExtra("id", -1L)
@@ -64,6 +68,11 @@ class AddEditActivity : AppCompatActivity() {
         }
 
         cancelButton.setOnClickListener {
+            finish()
+        }
+
+        // back arrow at the top, just closes the form and goes back to the list (nothing gets saved)
+        backButton.setOnClickListener {
             finish()
         }
     }

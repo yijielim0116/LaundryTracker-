@@ -2,13 +2,18 @@ package org.setu.laundrytracker.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.doAfterTextChanged
 import org.setu.laundrytracker.R
 import org.setu.laundrytracker.main.AppData
 import org.setu.laundrytracker.models.MachineStatus
@@ -19,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
     // empty layout from activity_main.xml, I add the machines into this in code
     private lateinit var listLayout: LinearLayout
+    private lateinit var searchInput: EditText
+    private lateinit var statusFilter: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +52,26 @@ class MainActivity : AppCompatActivity() {
         listLayout =
             findViewById(R.id.listLayout)
 
+        searchInput =
+            findViewById(R.id.searchInput)
+
+        // redraw the list every time the search text changes
+        searchInput.doAfterTextChanged {
+            displayMachines()
+        }
+
+        statusFilter =
+            findViewById(R.id.statusFilter)
+
+        // redraw the list when a different status is picked
+        statusFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                displayMachines()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
         displayMachines()
     }
 
@@ -64,13 +91,32 @@ class MainActivity : AppCompatActivity() {
         // clear it first or the machines show up twice
         listLayout.removeAllViews()
 
-        val machines = AppData.machines.findAll()
+        val allMachines = AppData.machines.findAll()
 
-        // no machines yet so just show a message
+        // only keep the machines where the name or location has the search text in it
+        // ignoreCase so "washer" still finds "Washer 1"
+        val search = searchInput.text.toString().trim()
+
+        // null means "All" so I don't filter by status
+        val status = selectedStatus()
+
+        // a machine has to match the search AND the status to show up
+        val machines = allMachines.filter { machine ->
+            val matchesSearch =
+                machine.name.contains(search, ignoreCase = true) ||
+                    machine.location.contains(search, ignoreCase = true)
+
+            val matchesStatus =
+                status == null || machine.status == status
+
+            matchesSearch && matchesStatus
+        }
+
+        // nothing to show, the message depends on if there's no machines at all or just no matches
         if (machines.isEmpty()) {
 
             val emptyText = TextView(this).apply {
-                text = "No machines yet."
+                text = if (allMachines.isEmpty()) "No machines yet." else "No machines match your search or filter."
                 textSize = 18f
                 setPadding(0, 40, 0, 40)
             }
@@ -133,6 +179,16 @@ class MainActivity : AppCompatActivity() {
             machineLayout.addView(deleteButton)
 
             listLayout.addView(machineLayout)
+        }
+    }
+
+    // turns the drop-down position into a status, same order as status_filter_options in strings.xml
+    private fun selectedStatus(): MachineStatus? {
+        return when (statusFilter.selectedItemPosition) {
+            1 -> MachineStatus.AVAILABLE
+            2 -> MachineStatus.IN_USE
+            3 -> MachineStatus.OUT_OF_ORDER
+            else -> null
         }
     }
 
