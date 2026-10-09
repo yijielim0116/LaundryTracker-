@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.AddEditActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <TextView
+            android:id="@+id/formTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Machine"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/nameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name (e.g. Washer 1)"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/locationInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Location (e.g. Block A, Floor 1)"
+            android:inputType="text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Type"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/typeGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkedButton="@+id/washerRadio"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/washerRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Washer" />
+
+            <RadioButton
+                android:id="@+id/dryerRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dryer" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Status"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/statusGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkedButton="@+id/availableRadio"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/availableRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Available" />
+
+            <RadioButton
+                android:id="@+id/inUseRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="In use" />
+
+            <RadioButton
+                android:id="@+id/outOfOrderRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Out of order" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel" />
+
+    </LinearLayout>
+</ScrollView>

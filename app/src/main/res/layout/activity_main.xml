@@ -4,16 +4,40 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
+    android:padding="32dp"
     tools:context=".activities.MainActivity">
 
+    <!-- title -->
     <TextView
         android:id="@+id/mainTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/app_name"
-        android:textSize="32sp"
+        android:textSize="28sp"
         android:textStyle="bold" />
+
+    <!-- opens the add machine form -->
+    <Button
+        android:id="@+id/addMachineButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Add Machine" />
+
+    <!-- the machine list goes in listLayout (added in MainActivity),
+         put it in a ScrollView so it can scroll when there's a lot of machines -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/listLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
 </LinearLayout>
