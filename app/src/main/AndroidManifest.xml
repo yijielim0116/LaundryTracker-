@@ -23,6 +23,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.AddEditActivity"
+            android:exported="false"
+            android:label="Add / Edit Machine"
+            android:theme="@style/Theme.LaundryTracker"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
