@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.setu.laundrytracker.R
@@ -18,6 +19,9 @@ class AddEditActivity : AppCompatActivity() {
     private lateinit var locationInput: EditText
     private lateinit var typeGroup: RadioGroup
     private lateinit var statusGroup: RadioGroup
+
+    // null = adding a new machine, otherwise it's the id of the machine I'm editing
+    private var editingId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +46,19 @@ class AddEditActivity : AppCompatActivity() {
         val cancelButton =
             findViewById<Button>(R.id.cancelButton)
 
+        // MainActivity sends the id when Edit is pressed, -1 means no id was sent
+        editingId =
+            intent.getLongExtra("id", -1L)
+                .takeIf { it != -1L }
+
+        if (editingId != null) {
+
+            findViewById<TextView>(R.id.formTitle)
+                .text = "Edit Machine"
+
+            loadExistingMachine(editingId!!)
+        }
+
         saveButton.setOnClickListener {
             saveMachine()
         }
@@ -49,6 +66,44 @@ class AddEditActivity : AppCompatActivity() {
         cancelButton.setOnClickListener {
             finish()
         }
+    }
+
+    // fills the form with the machine's current details so I can change them
+    private fun loadExistingMachine(id: Long) {
+
+        val machine =
+            AppData.machines.findOne(id)
+
+        if (machine == null) {
+
+            Toast.makeText(
+                this,
+                "Machine not found",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            finish()
+            return
+        }
+
+        nameInput.setText(machine.name)
+        locationInput.setText(machine.location)
+
+        // tick the right radio buttons for the type and status
+        typeGroup.check(
+            when (machine.type) {
+                MachineType.WASHER -> R.id.washerRadio
+                MachineType.DRYER -> R.id.dryerRadio
+            }
+        )
+
+        statusGroup.check(
+            when (machine.status) {
+                MachineStatus.AVAILABLE -> R.id.availableRadio
+                MachineStatus.IN_USE -> R.id.inUseRadio
+                MachineStatus.OUT_OF_ORDER -> R.id.outOfOrderRadio
+            }
+        )
     }
 
     private fun selectedType(): MachineType {
@@ -80,20 +135,43 @@ class AddEditActivity : AppCompatActivity() {
             return
         }
 
-        val machine = MachineModel(
-            name = name,
-            location = location,
-            type = selectedType(),
-            status = selectedStatus()
-        )
+        // no id means it's a new machine, otherwise update the one I'm editing
+        if (editingId == null) {
 
-        AppData.machines.create(machine)
+            val machine = MachineModel(
+                name = name,
+                location = location,
+                type = selectedType(),
+                status = selectedStatus()
+            )
 
-        Toast.makeText(
-            this,
-            "Machine created",
-            Toast.LENGTH_SHORT
-        ).show()
+            AppData.machines.create(machine)
+
+            Toast.makeText(
+                this,
+                "Machine created",
+                Toast.LENGTH_SHORT
+            ).show()
+
+        } else {
+
+            // keep the same id so the store knows which machine to replace
+            val machine = MachineModel(
+                id = editingId!!,
+                name = name,
+                location = location,
+                type = selectedType(),
+                status = selectedStatus()
+            )
+
+            AppData.machines.update(machine)
+
+            Toast.makeText(
+                this,
+                "Machine updated",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
         finish()
     }

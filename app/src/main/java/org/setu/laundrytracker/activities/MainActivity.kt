@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
         for (machine in machines) {
 
-            // one block for each machine (name, location, status, delete button)
+            // one block for each machine (name, location, status, edit and delete buttons)
             val machineLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(0, 20, 0, 20)
@@ -105,6 +105,17 @@ class MainActivity : AppCompatActivity() {
                 textSize = 14f
             }
 
+            // edit button, opens the form and sends the machine's id so it knows which one to edit
+            val editButton = Button(this).apply {
+                text = "Edit"
+
+                setOnClickListener {
+                    val intent = Intent(this@MainActivity, AddEditActivity::class.java)
+                    intent.putExtra("id", machine.id)
+                    startActivity(intent)
+                }
+            }
+
             // delete button, removes it from the store then redraws the list
             val deleteButton = Button(this).apply {
                 text = "Delete"
@@ -118,6 +129,7 @@ class MainActivity : AppCompatActivity() {
             machineLayout.addView(machineTitle)
             machineLayout.addView(machineLocation)
             machineLayout.addView(machineStatus)
+            machineLayout.addView(editButton)
             machineLayout.addView(deleteButton)
 
             listLayout.addView(machineLayout)
