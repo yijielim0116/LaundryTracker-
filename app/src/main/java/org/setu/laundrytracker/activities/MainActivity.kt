@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
         for (machine in machines) {
 
-            // one block for each machine (name, location, status)
+            // one block for each machine (name, location, status, delete button)
             val machineLayout = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(0, 20, 0, 20)
@@ -105,9 +105,20 @@ class MainActivity : AppCompatActivity() {
                 textSize = 14f
             }
 
+            // delete button, removes it from the store then redraws the list
+            val deleteButton = Button(this).apply {
+                text = "Delete"
+
+                setOnClickListener {
+                    AppData.machines.delete(machine.id)
+                    displayMachines()
+                }
+            }
+
             machineLayout.addView(machineTitle)
             machineLayout.addView(machineLocation)
             machineLayout.addView(machineStatus)
+            machineLayout.addView(deleteButton)
 
             listLayout.addView(machineLayout)
         }
