@@ -25,19 +25,11 @@
         android:orientation="vertical"
         android:padding="32dp">
 
-        <!-- opens the add machine form -->
-        <Button
-            android:id="@+id/addMachineButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Machine" />
-
         <!-- search box, the list updates while typing -->
         <EditText
             android:id="@+id/searchInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:hint="Search by name or location"
             android:importantForAutofill="no"
             android:inputType="text" />

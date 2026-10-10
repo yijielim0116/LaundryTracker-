@@ -50,14 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        val addMachineButton =
-            findViewById<Button>(R.id.addMachineButton)
-
-        // go to the add machine form
-        addMachineButton.setOnClickListener {
-            openAddMachine()
-        }
-
         listLayout =
             findViewById(R.id.listLayout)
 
@@ -112,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // used by the Add Machine button and the Add menu item so it's not written twice
+    // opens the form to add a new machine (from the Add item on the toolbar)
     private fun openAddMachine() {
         startActivity(
             Intent(this, AddEditActivity::class.java)
