@@ -26,5 +26,7 @@ data class MachineModel(
     val name: String = "",
     val location: String = "",
     val type: MachineType = MachineType.WASHER,
-    val status: MachineStatus = MachineStatus.AVAILABLE
+    val status: MachineStatus = MachineStatus.AVAILABLE,
+    // how long one wash/dry cycle takes in minutes, 60 if I don't pick one
+    val cycleMinutes: Int = 60
 )

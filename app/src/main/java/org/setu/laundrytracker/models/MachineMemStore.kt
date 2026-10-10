@@ -26,7 +26,8 @@ class MachineMemStore : MachineStore {
                 name = machine.name,
                 location = machine.location,
                 type = machine.type,
-                status = machine.status
+                status = machine.status,
+                cycleMinutes = machine.cycleMinutes
             )
             true
         } else {

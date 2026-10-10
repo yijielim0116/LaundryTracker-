@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import org.setu.laundrytracker.R
 import org.setu.laundrytracker.main.AppData
+import org.setu.laundrytracker.models.MachineModel
 import org.setu.laundrytracker.models.MachineStatus
 import org.setu.laundrytracker.models.MachineType
 
@@ -204,9 +205,9 @@ class MainActivity : AppCompatActivity() {
                 textSize = 16f
             }
 
-            // shows like "Washer · Available"
+            // shows like "Washer · Available", and "Washer · In use · 60 min" when it's running
             val machineStatus = TextView(this).apply {
-                text = "${typeLabel(machine.type)} · ${statusLabel(machine.status)}"
+                text = statusLine(machine)
                 textSize = 14f
             }
 
@@ -238,6 +239,17 @@ class MainActivity : AppCompatActivity() {
             machineLayout.addView(deleteButton)
 
             listLayout.addView(machineLayout)
+        }
+    }
+
+    // only add the cycle length for machines that are in use, it doesn't mean anything otherwise
+    private fun statusLine(machine: MachineModel): String {
+        val line = "${typeLabel(machine.type)} · ${statusLabel(machine.status)}"
+
+        return if (machine.status == MachineStatus.IN_USE) {
+            "$line · ${machine.cycleMinutes} min"
+        } else {
+            line
         }
     }
 

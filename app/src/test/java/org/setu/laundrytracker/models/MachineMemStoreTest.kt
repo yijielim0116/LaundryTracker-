@@ -38,6 +38,16 @@ class MachineMemStoreTest {
         assertEquals(MachineStatus.IN_USE, store.findOne(1L)?.status)
     }
 
+    // checks the cycle length is saved on create and changed on update
+    @Test
+    fun cycleMinutesIsSavedAndUpdated() {
+        store.create(MachineModel(name = "Washer 1"))
+        assertEquals(60, store.findOne(1L)?.cycleMinutes)
+
+        store.update(MachineModel(id = 1L, name = "Washer 1", cycleMinutes = 45))
+        assertEquals(45, store.findOne(1L)?.cycleMinutes)
+    }
+
     @Test
     fun updateReturnsFalseForUnknownId() {
         assertFalse(store.update(MachineModel(id = 99L)))

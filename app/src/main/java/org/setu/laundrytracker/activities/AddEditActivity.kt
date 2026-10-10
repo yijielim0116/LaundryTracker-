@@ -1,8 +1,11 @@
 package org.setu.laundrytracker.activities
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.NumberPicker
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +22,8 @@ class AddEditActivity : AppCompatActivity() {
     private lateinit var locationInput: EditText
     private lateinit var typeGroup: RadioGroup
     private lateinit var statusGroup: RadioGroup
+    private lateinit var cyclePicker: NumberPicker
+    private lateinit var cycleSection: LinearLayout
 
     // null = adding a new machine, otherwise it's the id of the machine I'm editing
     private var editingId: Long? = null
@@ -47,6 +52,19 @@ class AddEditActivity : AppCompatActivity() {
 
         statusGroup =
             findViewById(R.id.statusGroup)
+
+        cyclePicker =
+            findViewById(R.id.cyclePicker)
+
+        cycleSection =
+            findViewById(R.id.cycleSection)
+
+        setUpCyclePicker()
+
+        // show or hide the cycle picker whenever a different status is ticked
+        statusGroup.setOnCheckedChangeListener { _, _ ->
+            updateCycleSection()
+        }
 
         val saveButton =
             findViewById<Button>(R.id.saveButton)
@@ -118,6 +136,42 @@ class AddEditActivity : AppCompatActivity() {
                 MachineStatus.OUT_OF_ORDER -> R.id.outOfOrderRadio
             }
         )
+
+        cyclePicker.value = minutesToIndex(machine.cycleMinutes)
+
+        updateCycleSection()
+    }
+
+    // the cycle length only matters when someone is using the machine,
+    // so the picker only shows for In use (Available / Out of order hide it)
+    private fun updateCycleSection() {
+        cycleSection.visibility =
+            if (selectedStatus() == MachineStatus.IN_USE) View.VISIBLE else View.GONE
+    }
+
+    // the picker goes 10, 15, 20 ... 120 minutes
+    // NumberPicker only counts 0, 1, 2 ... so I use displayedValues to show the minutes instead
+    private fun setUpCyclePicker() {
+        val minutes = (MIN_MINUTES..MAX_MINUTES step STEP_MINUTES).toList()
+
+        cyclePicker.minValue = 0
+        cyclePicker.maxValue = minutes.size - 1
+        cyclePicker.displayedValues = minutes.map { "$it min" }.toTypedArray()
+        // stops it jumping from 120 back round to 10
+        cyclePicker.wrapSelectorWheel = false
+        // start on 60 min for a new machine
+        cyclePicker.value = minutesToIndex(60)
+    }
+
+    // e.g. 10 min -> 0, 15 min -> 1, 60 min -> 10
+    private fun minutesToIndex(minutes: Int): Int {
+        val index = (minutes - MIN_MINUTES) / STEP_MINUTES
+        return index.coerceIn(0, cyclePicker.maxValue)
+    }
+
+    // the other way round, picker position -> minutes
+    private fun selectedCycleMinutes(): Int {
+        return MIN_MINUTES + cyclePicker.value * STEP_MINUTES
     }
 
     private fun selectedType(): MachineType {
@@ -156,7 +210,8 @@ class AddEditActivity : AppCompatActivity() {
                 name = name,
                 location = location,
                 type = selectedType(),
-                status = selectedStatus()
+                status = selectedStatus(),
+                cycleMinutes = selectedCycleMinutes()
             )
 
             AppData.machines.create(machine)
@@ -175,7 +230,8 @@ class AddEditActivity : AppCompatActivity() {
                 name = name,
                 location = location,
                 type = selectedType(),
-                status = selectedStatus()
+                status = selectedStatus(),
+                cycleMinutes = selectedCycleMinutes()
             )
 
             AppData.machines.update(machine)
@@ -188,5 +244,12 @@ class AddEditActivity : AppCompatActivity() {
         }
 
         finish()
+    }
+
+    // limits for the cycle length picker
+    companion object {
+        private const val MIN_MINUTES = 10
+        private const val MAX_MINUTES = 120
+        private const val STEP_MINUTES = 5
     }
 }
