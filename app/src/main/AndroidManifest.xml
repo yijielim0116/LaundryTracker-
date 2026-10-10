@@ -26,7 +26,8 @@
         <activity
             android:name=".activities.AddEditActivity"
             android:exported="false"
-            android:label="Add / Edit Machine"
+            android:label="Add Machine"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/Theme.LaundryTracker"
             android:windowSoftInputMode="adjustResize" />
     </application>
