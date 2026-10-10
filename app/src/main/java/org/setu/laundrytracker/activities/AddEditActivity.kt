@@ -3,11 +3,10 @@ package org.setu.laundrytracker.activities
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.RadioGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import org.setu.laundrytracker.R
 import org.setu.laundrytracker.main.AppData
 import org.setu.laundrytracker.models.MachineModel
@@ -29,6 +28,14 @@ class AddEditActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_add_edit)
 
+        // my toolbar becomes the action bar, and the up arrow shows on the left
+        val toolbar =
+            findViewById<Toolbar>(R.id.toolbar)
+
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "Add Machine"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         nameInput =
             findViewById(R.id.nameInput)
 
@@ -47,9 +54,6 @@ class AddEditActivity : AppCompatActivity() {
         val cancelButton =
             findViewById<Button>(R.id.cancelButton)
 
-        val backButton =
-            findViewById<ImageButton>(R.id.backButton)
-
         // MainActivity sends the id when Edit is pressed, -1 means no id was sent
         editingId =
             intent.getLongExtra("id", -1L)
@@ -57,8 +61,7 @@ class AddEditActivity : AppCompatActivity() {
 
         if (editingId != null) {
 
-            findViewById<TextView>(R.id.formTitle)
-                .text = "Edit Machine"
+            supportActionBar?.title = "Edit Machine"
 
             loadExistingMachine(editingId!!)
         }
@@ -70,11 +73,13 @@ class AddEditActivity : AppCompatActivity() {
         cancelButton.setOnClickListener {
             finish()
         }
+    }
 
-        // back arrow at the top, just closes the form and goes back to the list (nothing gets saved)
-        backButton.setOnClickListener {
-            finish()
-        }
+    // up arrow on the toolbar, just closes the form and goes back to the list (nothing gets saved)
+    // I use finish() so the list keeps its search and filter instead of opening a new main screen
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     // fills the form with the machine's current details so I can change them

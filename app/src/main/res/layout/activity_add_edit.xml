@@ -1,128 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.AddEditActivity">
 
-    <LinearLayout
+    <!-- toolbar with the up arrow, the title changes to Edit Machine in the code -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="32dp">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <!-- back arrow and the title next to each other -->
+    <!-- the form scrolls under the toolbar -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="32dp">
 
-            <ImageButton
-                android:id="@+id/backButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Back"
-                android:src="?attr/homeAsUpIndicator" />
+            <EditText
+                android:id="@+id/nameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name (e.g. Washer 1)"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/locationInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Location (e.g. Block A, Floor 1)"
+                android:inputType="text" />
 
             <TextView
-                android:id="@+id/formTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Add Machine"
-                android:textSize="28sp"
+                android:layout_marginTop="16dp"
+                android:text="Type"
                 android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/typeGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/washerRadio"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/washerRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Washer" />
+
+                <RadioButton
+                    android:id="@+id/dryerRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dryer" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Status"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/statusGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/availableRadio"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/availableRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Available" />
+
+                <RadioButton
+                    android:id="@+id/inUseRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="In use" />
+
+                <RadioButton
+                    android:id="@+id/outOfOrderRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Out of order" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cancel" />
+
         </LinearLayout>
+    </ScrollView>
 
-        <EditText
-            android:id="@+id/nameInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Name (e.g. Washer 1)"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/locationInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Location (e.g. Block A, Floor 1)"
-            android:inputType="text" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Type"
-            android:textStyle="bold" />
-
-        <RadioGroup
-            android:id="@+id/typeGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkedButton="@+id/washerRadio"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/washerRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Washer" />
-
-            <RadioButton
-                android:id="@+id/dryerRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dryer" />
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Status"
-            android:textStyle="bold" />
-
-        <RadioGroup
-            android:id="@+id/statusGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkedButton="@+id/availableRadio"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/availableRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Available" />
-
-            <RadioButton
-                android:id="@+id/inUseRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="In use" />
-
-            <RadioButton
-                android:id="@+id/outOfOrderRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Out of order" />
-        </RadioGroup>
-
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Save" />
-
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cancel" />
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

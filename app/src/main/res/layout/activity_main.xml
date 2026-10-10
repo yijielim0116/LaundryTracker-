@@ -1,61 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="32dp"
     tools:context=".activities.MainActivity">
 
-    <!-- title -->
-    <TextView
-        android:id="@+id/mainTitle"
+    <!-- toolbar at the top, shows the app name (replaced my old big title) -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <!-- opens the add machine form -->
-    <Button
-        android:id="@+id/addMachineButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Add Machine" />
-
-    <!-- search box, the list updates while typing -->
-    <EditText
-        android:id="@+id/searchInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Search by name or location"
-        android:importantForAutofill="no"
-        android:inputType="text" />
-
-    <!-- drop-down to only show machines with a certain status, options are in strings.xml -->
-    <Spinner
-        android:id="@+id/statusFilter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:entries="@array/status_filter_options" />
-
-    <!-- the machine list goes in listLayout (added in MainActivity),
-         put it in a ScrollView so it can scroll when there's a lot of machines -->
-    <ScrollView
+    <!-- everything under the toolbar, padding is here so the toolbar can go edge to edge -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="32dp">
 
-        <LinearLayout
-            android:id="@+id/listLayout"
+        <!-- opens the add machine form -->
+        <Button
+            android:id="@+id/addMachineButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+            android:text="Add Machine" />
+
+        <!-- search box, the list updates while typing -->
+        <EditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Search by name or location"
+            android:importantForAutofill="no"
+            android:inputType="text" />
+
+        <!-- drop-down to only show machines with a certain status, options are in strings.xml -->
+        <Spinner
+            android:id="@+id/statusFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:entries="@array/status_filter_options" />
+
+        <!-- the machine list goes in listLayout (added in MainActivity),
+             put it in a ScrollView so it can scroll when there's a lot of machines -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/listLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+    </LinearLayout>
 
 </LinearLayout>
