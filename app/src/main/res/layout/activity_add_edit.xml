@@ -103,6 +103,30 @@
                     android:text="Out of order" />
             </RadioGroup>
 
+            <!-- cycle length part, only shows when In use is ticked (AddEditActivity hides it otherwise) -->
+            <LinearLayout
+                android:id="@+id/cycleSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Cycle length"
+                    android:textStyle="bold" />
+
+                <!-- scroll wheel for the cycle length, so I don't have to type a number
+                     the values (10 min to 120 min) are set in AddEditActivity -->
+                <NumberPicker
+                    android:id="@+id/cyclePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/saveButton"
                 android:layout_width="match_parent"
