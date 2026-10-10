@@ -2,6 +2,8 @@ package org.setu.laundrytracker.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Button
@@ -10,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.ViewCompat
@@ -51,9 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         // go to the add machine form
         addMachineButton.setOnClickListener {
-            startActivity(
-                Intent(this, AddEditActivity::class.java)
-            )
+            openAddMachine()
         }
 
         listLayout =
@@ -80,6 +81,57 @@ class MainActivity : AppCompatActivity() {
         }
 
         displayMachines()
+    }
+
+    // puts my menu (res/menu/menu_main.xml) on the toolbar
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    // what happens when a menu item is tapped
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add -> {
+                openAddMachine()
+                true
+            }
+
+            R.id.action_clear_filters -> {
+                clearFilters()
+                true
+            }
+
+            R.id.action_about -> {
+                showAbout()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    // used by the Add Machine button and the Add menu item so it's not written twice
+    private fun openAddMachine() {
+        startActivity(
+            Intent(this, AddEditActivity::class.java)
+        )
+    }
+
+    // empties the search box and sets the drop-down back to All,
+    // both of these redraw the list by themselves
+    private fun clearFilters() {
+        searchInput.setText("")
+        statusFilter.setSelection(0)
+    }
+
+    // small pop up with info about the app
+    private fun showAbout() {
+        AlertDialog.Builder(this)
+            .setTitle("About Laundry Tracker")
+            .setMessage("Check if the laundry machines are free before going down, and keep track of your wash and dry cycles.")
+            .setPositiveButton("OK", null)
+            .show()
     }
 
     // onResume runs when I come back from AddEditActivity,
